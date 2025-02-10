@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pin Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Pinterest Pin Generator</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Pinterest Pin Generator</h1>
-    <input type="text" id="urlInput" placeholder="Enter website URL">
-    <button onclick="fetchPageData()">Fetch Data</button>
-    
+    <h1>Auto Pinterest Pin Generator</h1>
+    <input type="file" id="imageUpload">
+    <input type="text" id="textInput" placeholder="Enter your text">
+    <select id="fontSelect">
+        <option value="Arial">Arial</option>
+        <option value="Cursive">Cursive</option>
+        <option value="Times New Roman">Times New Roman</option>
+    </select>
+    <button onclick="generatePin()">Generate Pin</button>
     <canvas id="pinCanvas"></canvas>
-    
-    <button onclick="downloadPin()">Download Pin</button>
+    <button onclick="downloadPin()">Download</button>
 
     <script src="script.js"></script>
 </body>
