@@ -1,47 +1,35 @@
-async function fetchPageData() {
-    const url = document.getElementById("urlInput").value;
-    if (!url) {
-        alert("Enter a valid URL");
+function generatePin() {
+    let canvas = document.getElementById("pinCanvas");
+    let ctx = canvas.getContext("2d");
+    let fileInput = document.getElementById("imageUpload").files[0];
+    let textInput = document.getElementById("textInput").value;
+    let font = document.getElementById("fontSelect").value;
+
+    if (!fileInput) {
+        alert("Please upload an image");
         return;
     }
 
-    try {
-        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
-        const data = await response.json();
-        
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = data.contents;
-        
-        const title = tempDiv.querySelector("title")?.innerText || "No Title Found";
-        const image = tempDiv.querySelector("img")?.src || "https://via.placeholder.com/400";
-
-        drawPin(title, image);
-    } catch (error) {
-        console.error("Error fetching data:", error);
+    let reader = new FileReader();
+    reader.onload = function(event) {
+        let img = new Image();
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            ctx.font = `40px ${font}`;
+            ctx.fillStyle = "white";
+            ctx.fillText(textInput, 50, 50);
+        }
+        img.src = event.target.result;
     }
-}
-
-function drawPin(title, imageUrl) {
-    const canvas = document.getElementById("pinCanvas");
-    const ctx = canvas.getContext("2d");
-
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = imageUrl;
-    
-    img.onload = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, 400, 400);
-        ctx.fillStyle = "black";
-        ctx.font = "20px Arial";
-        ctx.fillText(title, 10, 450);
-    };
+    reader.readAsDataURL(fileInput);
 }
 
 function downloadPin() {
-    const canvas = document.getElementById("pinCanvas");
-    const link = document.createElement("a");
-    link.download = "pin.png";
+    let canvas = document.getElementById("pinCanvas");
+    let link = document.createElement("a");
+    link.download = "pinterest-pin.png";
     link.href = canvas.toDataURL();
     link.click();
 }
